@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  
+  <style>
+    html {
+      box-sizing: border-box;
+      background: #ffc600;
+    }
+
+    .container {
+      max-width: 300px;
+      margin: 100px auto;
+      background: whitesmoke;
+      border-radius: 5px;
+      box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.185);
+    }
+    
+    .checkboxDiv {
+      display: flex;
+      align-content: center;
+      align-items: center;
+    }
+
+    input:checked + p {
+      text-decoration: line-through;
+    }
+
+    p {
+      margin: 0;
+      padding: 20px;
+      flex: 1;
+      font-size: 20px;
+      font-weight: 200;
+      border-left: 1px solid #d1e2ff;
+      border-bottom: 1px solid #d1e2ff; 
+    }
+    input[type="checkbox"] {
+      margin:0;
+      padding: 10px;
+    }
+
+    
+
+
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <ul>
+     
+    </ul>
+    <!-- <div class="checkboxDiv">
+      <input type="checkbox">
+      <p></p>
+    </div> -->
+    <form action="" id="form">
+      <input type="text" name="text" id="text">
+      <input type="submit" value="+ Add">
+    </form>
+  </div>
+
+<script>
+  const input = document.querySelector('#form input[type="text"]');
+  const testForm = document.querySelector('form')
+  const submit = document.querySelector('#form input[type="submit"]');
+  let isBetween = false;
+  let lastChecked;
+  
+  input.focus();
+
+  function getInputedValue(e) {
+    e.preventDefault()
+    const onInput =this.previousSibling.previousSibling  //select input 
+    
+    const div = document.createElement('div');
+    div.className = 'checkboxDiv';
+    
+    const inputCheckbox = document.createElement('input');
+    inputCheckbox.type = 'checkbox';
+
+    const p = document.createElement('p')
+    p.textContent = onInput.value;   //내가 input에 입력한 값을 p태그 안에 넣다
+
+    const button = document.createElement('button');
+    button.innerHTML='delete'   //delete 버튼추가
+
+
+    div.appendChild(inputCheckbox);
+    div.appendChild(p);
+    div.appendChild(button)  
+    
+    function deleteContentFunc(e) {
+      const findDiv = e.target.parentElement  //this의 부모인 div테그
+      findDiv.style.display = 'none';
+    }  
+
+    button.addEventListener('click', deleteContentFunc)
+
+
+    if(onInput.value !=='') {
+    document.querySelector('ul').appendChild(div);
+    }  //인풋에 빈칸 입력 방지
+ 
+
+    this.parentElement.focus();
+    onInput.value = '';
+
+
+   const checkboxes = document.querySelectorAll('.checkboxDiv input[type="checkbox"]');
+   checkboxes.forEach((checkbox) => checkbox.addEventListener('click', testFunc))
+  }
+
+  function testFunc(e) {
+    const checkboxes = document.querySelectorAll('.checkboxDiv input[type="checkbox"]');
+    
+    if(e.shiftKey && this.checked) {
+      checkboxes.forEach((checkbox) => {
+        if(checkbox === this || checkbox === lastChecked) {
+          isBetween = !isBetween
+        }
+        if(isBetween) {
+          checkbox.checked = true;
+        }
+
+      })
+     }
+     lastChecked = this;
+   }
+
+
+  submit.addEventListener('click', getInputedValue);
+  testForm.addEventListener('submit', getInputedValue);
+</script>
+</body>
+</html>
