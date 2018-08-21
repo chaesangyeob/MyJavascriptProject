@@ -1,0 +1,79 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Narrow Jumbotron Template for Bootstrap</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+    <style>
+    *{
+        text-align: center
+    }
+
+    #after_submit {
+        visibility: hidden;
+    }
+    </style>
+  </head>
+  <body>
+      <h1>자 이제 퀴즈를 시작하지</h1>
+      <form action="#" id="quiz" name="quiz">
+   
+        <h3><p>1.내가 가장 좋아 하는 게임은?</p></h3> 
+          <input type="text" name="question1" id="question1" class="question1">
+          <br/>
+
+          <h3><p>2.나의 이름은??</p></h3> 
+          <div>
+            <input type="radio" name="question2" class="question2" value="채상엽">채상엽
+            <input type="radio" name="question2" class="question2" value="채승엽">채승엽
+            <input type="radio" name="question2" class="question2" value="책상엽">채송엽
+            <br>
+          </div>
+          
+          <h3><p>3.내가 사는 곳은??</p></h3> 
+          <div>
+            <input type="radio" id="" class="question3" name="question3" value="대구">대구 
+            <input type="radio" id="" class="question3" name="question3" value="서울">서울 <br/>
+          </div>
+          
+          <input type="button" type="button" value="i'm done" onclick="check()">
+
+      </form>
+          <div id="after_submit" margin>
+              <h3><p>good job!! </p></h3>
+          </div>
+      <script>
+          function check() {
+              const question1 =  document.querySelector('#quiz').question1.value;
+              const question2 = document.querySelector('#quiz').question2.value;
+              const question3 = document.querySelector('#quiz').question3.value;
+              let count = 0;
+
+              if(question1 =='' || question2 =='' || question3 =='' ) {
+                alert('빈칸이 있으면 안됩니다.')                
+              }
+              
+              if(question1 === '롤') {
+                  count ++
+              }
+              if(question2 === '채상엽') {
+                  count ++
+              }
+              if(question3 === '대구') {
+                  count ++
+              }
+
+            document.querySelector('#after_submit').innerHTML += `${count}개를 맞추셨습니다`
+            document.querySelector('#after_submit').style.visibility ='visible'
+          }
+
+      </script>
+  </body>
+</html>
