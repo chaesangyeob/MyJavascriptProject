@@ -1,0 +1,124 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Narrow Jumbotron Template for Bootstrap</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+    <style>
+    *{
+        text-align: center;
+        align-items: center;
+    }
+    .container {
+        margin: 150px auto;
+    }
+    
+    </style>
+  </head>
+
+  <body>
+ 
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+               <div class="calculation"></div>
+               <div class="result"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <button class="btn btn-primary" value="1" name="1">1</button>
+                <button class="btn btn-primary" value="2" name="2">2</button>
+                <button class="btn btn-primary" value="3" name="3">3</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <button class="btn btn-primary" value="4" name="4">4</button>
+                <button class="btn btn-primary" value="5" name="5">5</button>
+                <button class="btn btn-primary" value="6" name="6">6</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <button class="btn btn-primary" value="7" name="7">7</button>
+                <button class="btn btn-primary" value="8" name="8">8</button>
+                <button class="btn btn-primary" value="9" name="9">9</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <button class="btn btn-primary" value="0" name="0">0</button>
+                <button class="btn btn-primary" value="+" name="+">+</button>
+                <button class="btn btn-primary" value="-" name="-">-</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <button type="button" class="btn btn-primary" value="" name="equal">=</button>
+                <button class="btn btn-primary" value="*" name="*">*</button>
+                <button class="btn btn-primary" value="/" name="/">/</button>
+            </div>
+        </div>
+        <button class="btn btn-primary" value="" name="cl" onclick="clear">clear</button>
+    </div>
+    <script
+    src="https://code.jquery.com/jquery-3.3.1.js"
+    integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+    crossorigin="anonymous">
+    </script>
+    <script>
+
+        //calculator in Jquery
+        $(document).ready(function() {
+            $('.container button').on('click',function() {
+               const value = $(this).val();
+               $('.calculation').append(value);
+            })
+
+            $('button[name="equal"]').on('click', function () {
+                const cal = $('.calculation').text();
+                const answer = eval(cal);
+                $('.result').text(answer)
+            });
+
+            $('.container button[name="cl"]').on("click", function() {
+                $('.calculation').text('');
+                $('.result').text('');
+            })
+        })
+
+       //calculator in pure javascript
+        function cal() {
+            const inputValued = this.value;
+            const result = document.querySelector('.result');
+           
+            
+            document.querySelector('.calculation').innerHTML += inputValued;
+            document.querySelector('button[name="equal"]').addEventListener('click', ()=> {
+               const calc = document.querySelector('.calculation').textContent;
+               const answer = eval(calc);
+               result.innerHTML = answer;
+            })
+
+             document.querySelector('button[name="cl"]').addEventListener('click', ()=> {
+               document.querySelector('.calculation').textContent = '';
+               result.innerHTML = '';
+            })
+
+            
+        }
+
+     
+        document.querySelectorAll('button').forEach((button) => button.addEventListener('click', cal))
+    </script>
+  </body>
+</html>
