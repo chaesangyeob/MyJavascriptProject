@@ -70,6 +70,18 @@
                   count ++
               }
 
+              if(count == 1) {
+                document.querySelector('#after_submit').innerHTML = `겨우 한개 맞추셨나요..<br/>` 
+              }
+              if(count == 2) {
+                document.querySelector('#after_submit').innerHTML = `그래도 두개 맞춰주셨어요!<br/>` 
+              } else {
+                document.querySelector('#after_submit').innerHTML = `나보다 날 더 잘아는듯!!<br/>` 
+
+              }
+
+              
+
             document.querySelector('#after_submit').innerHTML += `${count}개를 맞추셨습니다`
             document.querySelector('#after_submit').style.visibility ='visible'
           }
