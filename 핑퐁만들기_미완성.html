@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <style>
+        canvas {
+            background: #111;
+        }
+    </style>
+</head>
+<body onload ='startGame()'>
+    <script>
+
+        let pong1;
+        let pong2;
+        let ball;
+        let myScore1;
+        let myScore2;
+
+        function startGame() {
+            myGameArea.start();
+
+            pong1 = new Component(8,60,'yellow',20,150);
+            pong2 = new Component(8,60,'red',670,150);
+            ball = new Component(7,7,'orange',350,170);
+            myScore1 = new Component('16px', 'consolas','yellow',200,25,'text')
+            myScore2 = new Component('16px', 'consolas','lime',410,25,'text')
+       }
+
+        const myGameArea = {
+            canvas : document.createElement('canvas'),
+            start : function() {
+                this.canvas.width = 700;
+                this.canvas.height = 390;
+                this.context = this.canvas.getContext('2d');
+                document.body.insertBefore(this.canvas,document.body.childNodes[0]);
+                this.interval = setInterval(updateGameArea, 30);
+
+                window.addEventListener('keydown', (e)=> {
+                    console.log(e.keyCode)
+                  
+                    myGameArea.keys = (myGameArea.keys || []);
+                    myGameArea.keys[e.keyCode] = true;    
+                })
+
+                 window.addEventListener('keyup', (e)=> {
+                   
+                    myGameArea.keys = (myGameArea.keys || []);
+                    myGameArea.keys[e.keyCode] = false;
+                })
+
+            },
+
+            clear : function () {
+                this.context.clearRect(0,0,this.canvas.width,this.canvas.height)
+            },
+            stop : function () {
+                clearInterval(this.interval)
+            }
+        }
+
+        //다른 코드의 중복을 피하기 위한 constructor
+
+        function Component (width, height, color, x, y, type) {
+            this.type = type;
+            this.width = width;
+            this.height = height;
+            this.x = x;
+            this.y = y;
+            this.speedX = 0;
+            this.speedY = 0;
+
+            this.update = function () {
+                ctx = myGameArea.context;
+                if(this.type == 'text') {
+         
+                    ctx.font = `${this.width} ${this.height}`;
+                    ctx.fillStyle = color;
+                    ctx.fillText(this.text, this.x, this.y);
+                } else {
+                    ctx.fillStyle = color;
+                    ctx.fillRect(this.x, this.y, this.width, this.height)
+                }
+            }
+
+            this.newPos = function() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+            }
+
+            this.crashWith = function (otherObj) {
+                const myLeft = this.x;
+                const myRight = this.x + this.width;
+                const myTop = this.y;
+                const myBottom = this.y + this.height;
+                const otherLeft = otherObj.x;
+                const otherRight = otherObj.x + otherObj.width;
+                const otherTop = otherObj.y;
+                const otherButtom = otherObj.y + otherObj.height;
+                let crash = true;
+
+                if((myBottom < otherTop) || (myTop > otherButtom) || (myRight < otherLeft) || (myLeft > otherRight)) {
+                    crash = false;
+                }
+                return crash
+            }
+        }
+
+        function updateGameArea() {
+
+            if(pong1.y <=0) {
+                pong1.y = 0
+            } else if( pong1.y >=340) {
+                pong1.y = 330
+            } 
+            
+            if(pong2.y <=0) {
+                pong2.y = 0
+            } else if( pong2.y >=340) {
+                pong2.y = 330
+            } 
+            
+
+            if(myGameArea.keys && myGameArea.keys[38]) {
+                pong1.y -= 10;
+                if(ball.crashWith(pong1)) {
+                    ball.speedX = -4;
+                    ball.speedY = 14;
+                }
+            }
+
+
+            if(myGameArea.keys && myGameArea.keys[39]) {
+                pong2.y += 10;
+                if(ball.crashWith(pong2)) {
+                    ball.speedX = -4;
+                    ball.speedY = 14;
+                }
+
+            }
+            
+          
+
+            if(myGameArea.keys && myGameArea.keys[40]) {
+                pong1.y += 10;
+                if(ball.crashWith(pong1)) {
+                    ball.speedX = -4;
+                    ball.speedY = 14;
+                }
+
+            }
+
+            if(myGameArea.keys && myGameArea.keys[37]) {
+                pong2.y -= 10;
+                if(ball.crashWith(pong2)) {
+                    ball.speedX = -4;
+                    ball.speedY = 14;
+                }
+
+            }
+            
+
+            myGameArea.clear()
+
+            pong1.update();
+            pong2.update();
+            ball.update();
+
+            myScore1.text = 'Score :'
+            myScore2.text = 'Score :'
+            myScore1.update();
+            myScore2.update();
+        }
+    </script>
+</body>
+</html>
