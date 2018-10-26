@@ -16,49 +16,50 @@
   <form>
       <h2>지역별 인구 검색 엔진</h2>
       <input type="text" class="form-control" id="search" placeholder="City or State">
-      <span id="suggestions">여기에 적어야지</span>
+      <span id="suggestions" class="glyphicon glyphicon-warning-sign form-control-feedback">여기에 적어야지</span>
   </form>
 
   <script>
-        
-        const json = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
-        const data=[]
-        const searchBar = document.getElementById('search');
-        const suggestionBar = document.getElementById('suggestions');
+    const cities= []
+    const json= 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+      fetch(json)
+      .then(x=>x.json())
+      .then(x=> cities.push(...x));
 
-        fetch(json)
-            .then(x=> x.json())
-            .then(x=>data.push(...x));
+    const searchBar = document.getElementById('search');
+    const suggestionsBar = document.getElementById('suggestions');
 
-        function searchDate (searching,data){
-            const filterd = data.filter(x=> {
-                const rex = new RegExp(searching,'gi');
-                return x.city.match(rex) || x.state.match(rex)
-            })
-          return filterd
-        }
+    function findMatches(inputedWord,cities) {
+     const filteredDate= cities.filter(x=> {
+        const reg= new RegExp(inputedWord,'gi');
+        return x.city.match(reg) || x.state.match(reg)
+      })
+    
+      return filteredDate
+    }
 
-        function displayData () {
-            const display = searchDate(this.value,data);
-         
-         
-            const answer =display.map(x=> {
-                const reg= new RegExp(this.value, 'gi');
-                const cityName = x.city.replace(reg,`<span class='hl'>${this.value}</span>`);
-                const stateName =x.state.replace(reg,`<span class='hl'>${this.value}</span>`);
-                return `
-              <li>
-                <span>City: ${cityName},, State:${stateName}</span>
-                <span class='hl'>Population:</span> ${x.population}
-              <li>`
-            })
-            suggestionBar.innerHTML = answer
-        }
-        
-        searchBar.addEventListener('change',displayData)
-        searchBar.addEventListener('keyup', displayData)
+    function displayDate() {
+      console.log(this.value)
+      const display =findMatches(this.value,cities)
+      const mapDisplay = display.map(x => {
+        const reg= new RegExp(this.value,'gi');
+        const cityName = x.city.replace(reg,`<span class='hl'>${this.value}</span>`);
+        const stateName = x.state.replace(reg,`<span class='hl'>${this.value}</span>`);
+
+        const li = `
+        <li>
+          <span class='glyphicon glyphicon-warning-sign form-control-feedback'>City</span> :${cityName} State: ${stateName}</span>
+          <span class='glyphicon glyphicon-warning-sign form-control-feedback'>Population:</span> ${x.population}
+        </li>`
+        return li
+      }).join('');
+      suggestionsBar.innerHTML= mapDisplay
+    }
 
 
+    searchBar.addEventListener('change',displayDate);
+    searchBar.addEventListener('keydown', displayDate)
+    
    
           
                          
