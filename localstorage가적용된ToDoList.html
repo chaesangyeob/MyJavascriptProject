@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"> 
+    <title>Document</title>
+    <style>
+        body {
+          
+            align-content: center;
+            text-align: center
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h2>로컬스토리지가 적용된 투두리스트.</h2>
+        <p>좋다좋아</p>
+        <ul class="ul">
+           
+        </ul>
+         <form class="form form-group">
+            <input type="text" name="item" placeholder="Foods" required>
+            <button class="btn">submit</button>
+         </form>
+    </div>
+
+    <script>
+        const input = document.querySelector('[name=item]');
+        const lists = document.querySelector('.ul');
+        const submit = document.querySelector('.form');
+        const listsArr= JSON.parse(localStorage.getItem('items'))||[];
+        
+
+        function addItem(e) {
+            e.preventDefault();
+            const data = {
+                value :e.target.elements[0].value,
+                checked : false
+            };
+           listsArr.push(data);
+           displayData(listsArr,lists);
+           localStorage.setItem('items',JSON.stringify(listsArr))
+           
+        }
+        function Delete(a) {
+            listsArr.splice(a.id,1);
+            displayData(listsArr,lists);
+            localStorage.setItem('items', JSON.stringify(listsArr))
+           
+        }
+ 
+        function displayData(arr,lists) {
+            const mapTodisplayArr = listsArr.map((x,i)=> {
+                const aa = 
+                `
+                <li>
+                    <input type='checkbox' data-index=${i} id='item${i}' ${x.checked ? 'checked' : ''} >
+                    <label for ='item${i}'>${x.value}</label> 
+                    <button class='btn' id='${i}' onclick='Delete(this)'>Delete</button>
+                </li>
+                `
+                return aa
+            }).join('');
+            lists.innerHTML = mapTodisplayArr;
+            input.value ='';
+            input.focus();
+        }
+
+        function toggleFunc (e) {
+            if(!e.target.matches('input')) return
+            const index = e.target.dataset.index;
+            listsArr[index].checked = !listsArr[index].checked;
+            localStorage.setItem('items',JSON.stringify(listsArr))
+        }
+        displayData(listsArr,lists)
+        submit.addEventListener('submit', addItem);
+        lists.addEventListener('click',toggleFunc);
+        
+    </script>
+</body>
+</html>
